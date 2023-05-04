@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Mikes Countdowns - School Count Down</title>
+
+		<style>
+			/* general styling */
+			:root {
+				--smaller: .75;
+			}
+
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			html, body {
+				height: 100%;
+				margin: 0;
+				transition: background-image 1s ease;
+			}
+
+			body {
+				align-items: center;
+				background-color: #ffd54f;
+				background-image: url('https://wallpaperaccess.com/full/4223527.jpg'); /* Sunset with some city down left (default image)*/
+				display: flex;
+				font-family: -apple-system, 
+					BlinkMacSystemFont, 
+					"Segoe UI", 
+					Roboto, 
+					Oxygen-Sans, 
+					Ubuntu, 
+					Cantarell, 
+					"Helvetica Neue", 
+					sans-serif;
+				background-size: cover;
+				background-position: center;
+				background-repeat: no-repeat;
+			}
+
+			.container {
+				color: #D6ECFF;
+				margin: 0 auto;
+				text-align: center;
+			}
+
+			h1 {
+				font-weight: normal;
+				letter-spacing: .125rem;
+				text-transform: uppercase;
+			}
+
+			li {
+				display: inline-block;
+				font-size: 1.5em;
+				list-style-type: none;
+				padding: 1em;
+				text-transform: uppercase;
+			}
+
+			li span {
+				display: block;
+				font-size: 4.5rem;
+			}
+
+			.emoji {
+				display: none;
+				padding: 1rem;
+			}
+
+			.emoji span {
+				font-size: 4rem;
+				padding: 0 .5rem;
+			}
+
+			@media all and (max-width: 768px) {
+				h1 {
+					font-size: calc(1.5rem * var(--smaller));
+				}
+
+				li {
+					font-size: calc(1.125rem * var(--smaller));
+				}
+
+				li span {
+					font-size: calc(3.375rem * var(--smaller));
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+			<h1 id="headline">Countdown till school ends</h1>
+			<div id="countdown">
+				<ul>
+					<li><span id="days"></span>Days</li>
+					<li><span id="hours"></span>Hours</li>
+					<li><span id="minutes"></span>Minutes</li>
+					<li><span id="seconds"></span>Seconds</li>
+				</ul>
+			</div>
+			<div id="content" class="emoji">
+				<span>🥳</span>
+				<span>🎉</span>
+				<span>🎂</span>
+			</div>
+		</div>
+
+		<script>
+			(function () {
+				const second = 1000,
+					  minute = second * 60,
+					  hour = minute * 60,
+					  day = hour * 24;
+
+				//I'm adding this section so I don't have to keep updating this pen every year :-)
+				//remove this if you don't need it
+				const dayMonth = "06/09/";
+				const yyyy = new Date().getFullYear();
+				const birthday = new Date(`${dayMonth}${yyyy}`).getTime();
+				//end
+
+				const x = setInterval(function() {
+					const now = new Date().getTime();
+					const distance = birthday - now;
+
+					const totalDays = Math.floor(distance / (day));
+					const weekends = Math.floor(totalDays / 7) * 2;
+
+					// Check if the remaining days exclude the weekends or not
+					if (totalDays % 7 !== 0) {
+						const remainingDays = totalDays % 7;
+						for (let i = 0; i < remainingDays; i++) {
+							const day = new Date(now + ((i + totalDays - remainingDays) * day)).getDay();
+							if (day === 0 || day === 6) {
+								weekends++;
+							}
+						}
+					}
+
+					document.getElementById("days").innerText = totalDays - weekends,
+						document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
+						document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
+						document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);
+
+					//do something later when date is reached
+					if (distance < 0) {
+						document.getElementById("headline").innerText = "It's summer vacation!";
+						document.getElementById("countdown").style.display = "none";
+						document.getElementById("content").style.display = "block";
+						clearInterval(x);
+					}
+				}, 0)
+				}());
+
+			var cycle = 0; 
+			var allBackgrounds = [ 
+				"https://rare-gallery.com/thumbs/4572598-palm-trees-swimming-pool.jpg",  
+				"https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8NGslMjBsYW5kc2NhcGV8ZW58MHx8MHx8&w=1000&q=80",  
+				"https://w0.peakpx.com/wallpaper/368/461/HD-wallpaper-luxury-resort-sea-palm-trees-relaxing-maldives.jpg",
+				"https://wallpapercrafter.com/desktop/33415-Turks-and-Caicos-Islands-4K-4k-wallpaper-Best-beaches-of-2017-tourism-resort-vacation-travel-clouds-sky-sea-ocean-palms.jpg",
+				"https://img.rawpixel.com/private/static/images/website/2022-05/upwk62049834-wikimedia-image-job572-1.jpg?w=1200&h=1200&dpr=1&fit=clip&crop=default&fm=jpg&q=75&vib=3&con=3&usm=15&cs=srgb&bg=F4F4F3&ixlib=js-2.2.1&s=26a17e7b89a0875106817f0e366a22db"
+			]; 
+
+			setInterval(function() { 
+				if (cycle < 5) { 
+					document.body.style.backgroundImage = "url('" + allBackgrounds[cycle] + "')"; 
+					cycle += 1; 
+				} else {  
+					cycle = 0; 
+				} 
+			}, 5000); 
+
+			document.body.style.backgroundPosition = "center";
+		</script>
+	</body>
+</html>
